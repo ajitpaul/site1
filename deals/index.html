@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>CRM Deal</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript">
+    // Sending and receiving data in JSON format using POST mothod
+    // 
+    function sendPOST(apikey){
+    var $title = "";
+    var $company = document.getElementsByName("company")[0].value;
+    var $name = document.getElementsByName("name")[0].value;
+    var $email = document.getElementsByName("email")[0].value;
+    var $phone = document.getElementsByName("phone")[0].value;
+    var $lastname = document.getElementsByName("lastname")[0].value;
+
+    if($company){
+      $title = $company + " Deal";
+    }
+    else {
+      $title = $name + "'s Deal";
+    }
+    xhrContact = new XMLHttpRequest();
+    xhrDeal = new XMLHttpRequest();
+    var DealComplete = false;
+    var url1 = "https://app.teamwave.com/api/contacts/people?api_key="+apikey;
+    var url = "https://app.teamwave.com/api/crm/deals?api_key="+apikey;
+    xhrDeal.open("POST", url, true);
+    xhrDeal.setRequestHeader("Content-type", "application/json");
+    xhrDeal.onreadystatechange = function () {
+    if (xhrDeal.readyState == 4 && (xhrDeal.status == 201)) {
+    var json = JSON.parse(xhrDeal.responseText);
+    if(xhrDeal.responseText){
+    DealComplete =true;
+    }
+    }
+    }
+    var data = JSON.stringify({
+    "stage":{
+    "id":26,
+    },
+    "currency": 16,
+    "title": $title,
+    });
+
+
+
+    xhrContact.open("POST", url1, true);
+    xhrContact.setRequestHeader("Content-type", "application/json");
+    xhrContact.onreadystatechange = function () {
+    if (xhrContact.readyState == 4 && (xhrContact.status == 201)) {
+    var json = JSON.parse(xhrContact.responseText);
+    if(xhrContact.responseText && DealComplete){
+    alert("Deal and contact added Successfully!!");
+    }
+    }
+    }
+    var data2 = JSON.stringify({
+      "owner":{
+        "id":3858
+      },
+    "first_name": $name,
+    "last_name": $lastname,
+    "full_name": $name + $lastname,
+    "phone": $phone,
+    "email": $email
+    });
+
+    /*var x=0;
+    while(x<2){
+      if(x===1){
+        url ="https://app.teamwave.com/api/contacts/people"+apikey;
+      data = JSON.stringify({
+    "first_name": $name,
+    "last_name": $lastname,
+    "full_name": $name + $lastname,
+    "phone": $phone,
+    "email": $email,
+    "company": $company
+    });
+      }*/
+      
+   xhrDeal.send(data);
+
+   xhrContact.send(data2)
+
+ 
+    }
+    function enterAPI() {
+    var apikey = prompt("Please enter your API Key", "");
+    if (apikey != null) {
+    sendPOST(apikey);
+    }
+    }
+    function alertFn() {
+    alert("Deal Added Successfully!");
+    }
+    </script>
+  </head>
+  <body>
+ 
+      
+
+    <div class="crmdeal">
+      <h1>Create CRM Deal</h1>
+      
+     <fieldset>
+        <legend><span class="number">1</span>Deal Details</legend>
+        <label for="title">First Name:</label>
+        <input type="text" id="name" name="name">
+
+          <label for="title">Last Name:</label>
+        <input type="text" id="lastname" name="lastname">
+
+          <label for="title">Your Email:</label>
+        <input type="email" id="email" name="email">
+        
+          <label for="title">Company:</label>
+        <input type="text" id="company" name="company">
+        
+        <label for="expected_close">Website:</label>
+        <input type="text" id="website" name="website">
+
+         <label for="">Phone:</label>
+        <input type="number" id="phone" name="phone">
+      </fieldset>
+      
+<!--       <fieldset>
+  <legend><span class="number">2</span>Deal Settings</legend>
+
+  <label for="stage">Stage</label>
+  <select id="stage" name="stage">
+    
+    <option value=26>Leads</option>
+    <option value=27>Connected (Email/Phone)</option>
+    <option value=28>Deal Complete</option>
+    <option value=30>Proposal Sent</option>
+    <option value=31>In Negotiation</option>
+    
+  </select> -->
+        
+        <button onclick="enterAPI();">Add Deal</button>
+        <small>After Successfull addition of the deal, it will be listed in <a href=" https://app.teamwave.com/crm/#/pipeline/default">CRM Deals Page</a></small>
+      </div>
+    </body>
+    <style>
+    .crmdeal {
+    max-width: 480px;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    border-radius: 8px;
+    }
+    </style>
+  </html>

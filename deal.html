@@ -1,0 +1,63 @@
+<html>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    // Sending and receiving data in JSON format using POST mothod
+//
+function sendPOST(){
+  var $currency = document.getElementsByName("currency")[0].value;
+  var $title = document.getElementsByName("title")[0].value;
+xhr = new XMLHttpRequest();
+var url = "https://app.goteamwave.com/api/crm/deals?api_key=dda0c7e8e1ed4231a2794c99d19be85b";
+xhr.open("POST", url, true);
+xhr.setRequestHeader("Content-type", "application/json");
+xhr.onreadystatechange = function () { 
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        var json = JSON.parse(xhr.responseText);
+        console.log(json.email + ", " + json.password)
+    }
+}
+var data = JSON.stringify({
+"stage":{
+      "id":340,
+      "title":"Leads",
+      "is_trashed":false,
+      "index":0,
+      "is_deal_rotting":false,
+      "rotting_days":null,
+      "no_of_deals":60
+   },
+   "currency":$currency,
+   "title": $title
+   });
+xhr.send(data); 
+}
+
+</script>
+
+  
+  <div class="form-group">
+    <label for="exampleSelect1">Stage</label>
+    <select class="form-control" id="stage">
+      <option>Needs Discovered</option>
+      <option>Contacts Made</option>
+      <option >Proposal Presented</option>
+      <option>In Negotiation</option>
+      <option>Stage 007</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleTextarea">Title</label>
+    <input type="text" class="form-control" id="title" name="title"></input>
+  </div>
+  <div class="form-group">
+    <label for="currency">Currency</label>
+    <select class="form-control" id="currency" name="currency">
+      <option value=194>INR</option>
+      <option value=191>USD</option>
+      <option value=192>POUNDS</option>
+      <option value=193>EURO</option>
+      <option value=195>CAD</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" onclick="sendPOST();">Submit</button>
+</html>
