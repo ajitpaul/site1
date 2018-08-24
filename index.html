@@ -52,7 +52,7 @@
     <header>
         <div class="header-content" style="top: 37%!important;">
             <div class="header-content-inner">
-                <h1 id="homeHeading">Resolde</h1>
+                <h1 id="homeHeading">Resolde<span id="dotId">.</span></h1>
                 <hr>
                 <p style="color: beige;"> Rebuild | Recycle | Resell </p>
                 <!-- <a href="mailto:ping@ajithpaul.com" class="btn btn-primary btn-xl page-scroll">Contact Me</a> -->
@@ -110,6 +110,20 @@
   ga('create', 'UA-68651076-2', 'auto');
   ga('send', 'pageview');
 
+</script>
+<script type="text/javascript">
+var count = 0;
+(function toggleDot(){
+    if(count%2==0){
+        document.getElementById("dotId").style.visibility = "hidden";
+    }
+    else{
+        document.getElementById("dotId").style.visibility = "visible";
+    }
+    var n = 0;
+    setTimeout(toggleDot,700);
+    count++;
+})();
 </script>
 <style>
     .social-links {
